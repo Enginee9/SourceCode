@@ -1,0 +1,3 @@
+from doctest import UnexpectedException
+
+asdiahiuashdblHBDFKB`Z;UnexpectedExceptionprint
