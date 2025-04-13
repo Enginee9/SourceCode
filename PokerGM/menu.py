@@ -2,7 +2,7 @@ import pygame
 import sys
 from blackjack import BlackjackGame
 from tutorial import BlackjackTutorial
-sdfghjkl;''
+
 # Constants
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
