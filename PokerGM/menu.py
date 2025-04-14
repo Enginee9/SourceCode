@@ -38,7 +38,7 @@ class MainMenu:
         button_height = int(self.screen_height * 0.1)
         self.draw_button("Blackjack", self.screen_width // 2 - button_width // 2, int(self.screen_height * 0.4), button_width, button_height)
         self.draw_button("Texas Hold'em", self.screen_width // 2 - button_width // 2, int(self.screen_height * 0.55), button_width, button_height)
-        self.draw_button("Blackjack Tutorial", self.screen_width // 2 - button_width // 2, int(self.screen_height * 0.7), button_width, button_height)
+        self.draw_button("How To Play", self.screen_width // 2 - button_width // 2, int(self.screen_height * 0.7), button_width, button_height)
 
     def draw_button(self, text: str, x: int, y: int, width: int, height: int):
         mouse = pygame.mouse.get_pos()
