@@ -1,6 +1,7 @@
 import pygame
 import sys
 from blackjack import BlackjackGame
+from texas_holdem import TexasHoldemGame
 from tutorial import BlackjackTutorial
 
 # Constants
@@ -77,12 +78,12 @@ class MainMenu:
                 if result == 'quit':
                     pygame.quit()
                     sys.exit()
-            elif selected_game := self.draw_button("Texas Hold'em", self.screen_width // 2 - button_width // 2, int(self.screen_height * 0.55), button_width, button_height):
-                self.screen.fill(BLACK)
-                text = self.font.render("Texas Hold'em Coming Soon!", True, WHITE)
-                self.screen.blit(text, (self.screen_width // 2 - text.get_width() // 2, self.screen_height // 2))
-                pygame.display.flip()
-                pygame.time.wait(2000)
+                    elif selected_game := self.draw_button("Texas Hold'em", self.screen_width // 2 - button_width // 2,int(self.screen_height * 0.55), button_width, button_height):
+                    game = TexasHoldemGame(self.screen)
+                    result = game.run()
+                    if result == 'quit':
+                        pygame.quit()
+                        sys.exit()
             elif selected_game := self.draw_button("Blackjack Tutorial", self.screen_width // 2 - button_width // 2, int(self.screen_height * 0.7), button_width, button_height):
                 tutorial = BlackjackTutorial(self.screen)
                 result = tutorial.run()
