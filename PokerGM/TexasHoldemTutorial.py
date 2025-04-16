@@ -25,6 +25,7 @@ class TexasHoldemTutorial:
             "Qs": Card("queen", "spades", self.screen_width, self.screen_height),
             "Kh": Card("king", "hearts", self.screen_width, self.screen_height),
             "As": Card("ace", "spades", self.screen_width, self.screen_height),
+
             "back": None  # Will be initialized in load_card_back()
         }
         self.load_card_back()
@@ -45,13 +46,13 @@ class TexasHoldemTutorial:
                     "- Showdown if multiple players remain"
                 ],
                 "visuals": [
-                    {"card": "Jc", "x": 0.4, "y": 0.4, "label": "Your Card"},
-                    {"card": "Qs", "x": 0.5, "y": 0.4, "label": "Your Card"},
-                    {"card": "back", "x": 0.7, "y": 0.4, "label": "Opponent Card"},
-                    {"card": "back", "x": 0.8, "y": 0.4, "label": "Opponent Card"},
-                    {"card": "2h", "x": 0.3, "y": 0.7, "label": "Flop"},
-                    {"card": "10d", "x": 0.4, "y": 0.7, "label": "Flop"},
-                    {"card": "Kh", "x": 0.5, "y": 0.7, "label": "Flop"}
+                    {"card": "Jc", "x": 0.68, "y": 0.4, "label": "Your Card"},
+                    {"card": "Qs", "x": 0.8, "y": 0.4, "label": "Your Card"},
+                    {"card": "back", "x": 0.65, "y": 0.7, "label": "Card Back"},
+                    {"card": "back", "x": 0.8, "y": 0.7, "label": "Card Back"},
+                    {"card": "2h", "x": 0.1, "y": 0.7, "label": "Flop"},
+                    {"card": "10d", "x": 0.2, "y": 0.7, "label": "Flop"},
+                    {"card": "Kh", "x": 0.3, "y": 0.7, "label": "Flop"}
                 ]
             },
             {
@@ -70,11 +71,11 @@ class TexasHoldemTutorial:
                     "- High Card"
                 ],
                 "visuals": [
-                    {"card": "As", "x": 0.5, "y": 0.3, "label": "Royal Flush"},
-                    {"card": "Kh", "x": 0.6, "y": 0.3, "label": "Straight Flush"},
-                    {"card": "Jc", "x": 0.5, "y": 0.5, "label": "Four of a Kind"},
-                    {"card": "Qs", "x": 0.6, "y": 0.5, "label": "Full House"},
-                    {"card": "10d", "x": 0.5, "y": 0.7, "label": "Flush"}
+                    {"card": "As", "x": 0.6, "y": 0.3, "label": "Royal Flush"},
+                    {"card": "Kh", "x": 0.8, "y": 0.3, "label": "Straight Flush"},
+                    {"card": "Jc", "x": 0.6, "y": 0.55, "label": "Four of a Kind"},
+                    {"card": "Qs", "x": 0.8, "y": 0.55, "label": "Full House"},
+                    {"card": "10d", "x": 0.6, "y": 0.8, "label": "Flush"}
                 ]
             },
             {
@@ -92,8 +93,8 @@ class TexasHoldemTutorial:
                     "- Fold: Quit the hand"
                 ],
                 "visuals": [
-                    {"card": "Jc", "x": 0.3, "y": 0.4, "label": "Pre-Flop"},
-                    {"card": "Qs", "x": 0.4, "y": 0.4, "label": "Pre-Flop"},
+                    {"card": "Jc", "x": 0.6, "y": 0.4, "label": "Pre-Flop"},
+                    {"card": "Qs", "x": 0.8, "y": 0.4, "label": "Pre-Flop"},
                     {"card": "2h", "x": 0.3, "y": 0.7, "label": "Flop"},
                     {"card": "10d", "x": 0.4, "y": 0.7, "label": "Flop"},
                     {"card": "Kh", "x": 0.5, "y": 0.7, "label": "Flop"},
@@ -114,10 +115,10 @@ class TexasHoldemTutorial:
                     "Click or press any key to continue"
                 ],
                 "visuals": [
-                    {"card": "As", "x": 0.3, "y": 0.4, "label": "Strong Hand"},
-                    {"card": "Kh", "x": 0.4, "y": 0.4, "label": "Strong Hand"},
-                    {"card": "2h", "x": 0.6, "y": 0.4, "label": "Weak Hand"},
-                    {"card": "10d", "x": 0.7, "y": 0.4, "label": "Weak Hand"}
+                    {"card": "As", "x": 0.6, "y": 0.4, "label": "Strong Hand"},
+                    {"card": "Kh", "x": 0.8, "y": 0.4, "label": "Strong Hand"},
+                    {"card": "2h", "x": 0.6, "y": 0.7, "label": "Weak Hand"},
+                    {"card": "10d", "x": 0.8, "y": 0.7, "label": "Weak Hand"}
                 ]
             }
         ]
