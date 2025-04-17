@@ -13,6 +13,8 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GOLD = (255, 215, 0)
+DARK_RED = (150, 0, 0)
+GRAY = (200, 200, 200)
 FPS = 60
 MIN_WIDTH = 800
 MIN_HEIGHT = 600
@@ -161,8 +163,7 @@ class BlackjackGame:
             self.deck_manager = DeckManager(self.screen_width, self.screen_height)
 
         if self.hearts <= 0:
-            self.game_state = "game_over"
-            self.message = "No hearts left! Game Over!"
+            self.game_state = "showing_ending"  # New state for showing the ending
             return
 
         self.player_hand = []
@@ -229,6 +230,9 @@ class BlackjackGame:
             self.hearts -= 1
             self.game_state = "game_over"
             self.message = f"Player busts! Lost a heart! ({self.hearts} ♥ left)"
+            if self.hearts <= 0:
+                self.show_game_over_sequence()  # Directly call here
+                return
         elif player_value == 21:
             self.player_stand()
 
@@ -253,6 +257,9 @@ class BlackjackGame:
         elif dealer_value > player_value:
             self.hearts -= 1
             self.message = f"Dealer wins! Lost a heart! ({self.hearts} ♥ left)"
+            if self.hearts <= 0:
+                self.show_game_over_sequence()  # Directly call here
+                return
         elif dealer_value < player_value:
             self.money += WIN_REWARD
             self.message = f"Player wins! Earned ${WIN_REWARD:,}!"
@@ -260,6 +267,108 @@ class BlackjackGame:
             self.message = "Push! It's a tie."
 
         self.game_state = "game_over"
+
+    def show_game_over_sequence(self):
+        """Display the dramatic ending sequence with proper event handling"""
+        self.screen.fill(BLACK)
+        pygame.display.flip()
+
+        # Font setup with fallbacks
+        try:
+            main_font = pygame.font.SysFont('Arial', 24)
+            devil_font = pygame.font.SysFont('Arial', 28, bold=True)
+        except:
+            main_font = pygame.font.Font(None, 24)
+            devil_font = pygame.font.Font(None, 28)
+
+        # Script lines with formatting and timing
+        script = [
+            (devil_font, RED, "The Devil: \"You lose.\"", 2.5),
+            (main_font, WHITE, "", 1.0),
+            (main_font, WHITE, "A man jolts awake in his shabby apartment.", 2.0),
+            (main_font, WHITE, "The mirror shows him rapidly aging, hair turning gray.", 2.5),
+            (main_font, WHITE, "", 1.0),
+            (main_font, GRAY, "Man: \"What... did you take?\"", 2.0),
+            (main_font, WHITE, "", 1.0),
+            (devil_font, RED, "The Devil: \"Time. Health. Love.\"", 2.5),
+            (devil_font, RED, "\"Things you never really needed, did you?\"", 2.5),
+            (devil_font, RED, "\"All you ever wanted was money.\"", 2.5),
+            (main_font, WHITE, "", 1.0),
+            (main_font, (150, 150, 150), "(A man collapses as his piles of cash crumble into ash.)", 3.0),
+            (main_font, WHITE, "", 1.5),
+            (main_font, WHITE, "Another night. A new gambler enters the casino.", 2.0),
+            (main_font, WHITE, "The Devil steps out of the shadows...", 2.0),
+            (main_font, WHITE, "", 1.0),
+            (devil_font, RED, "The Devil: \"Will you be next?\"", 3.0),
+            (main_font, WHITE, "", 2.0),
+            (main_font, WHITE, "Press any key to continue...", 0)
+        ]
+
+        y_pos = 100
+        line_height = 30
+        clock = pygame.time.Clock()
+
+        for font, color, line, delay in script:
+            # Handle events before each line
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    self.game_state = 'exit'
+                    return  # Immediate exit if user clicks/presses key
+
+            self.screen.fill(BLACK)
+
+            if line:  # Only render if there's actual text
+                text = font.render(line, True, color)
+                self.screen.blit(text, (100, y_pos))
+
+            pygame.display.flip()
+
+            # Handle timed display with event checking
+            if delay > 0:
+                start_time = time.time()
+                while time.time() - start_time < delay:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+                        elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                            self.game_state = 'exit'
+                            return
+                    clock.tick(30)
+
+            y_pos += line_height
+            if y_pos > self.screen_height - 100:
+                y_pos = 100
+
+        # Final wait for continuation
+        waiting = True
+        blink_time = pygame.time.get_ticks()
+        while waiting:
+            current_time = pygame.time.get_ticks()
+
+            # Blinking "continue" prompt
+            if current_time - blink_time > 500:
+                blink_time = current_time
+                self.screen.fill(BLACK, (100, self.screen_height - 50, self.screen_width - 200, 30))
+                if int(current_time / 500) % 2 == 0:
+                    text = main_font.render("Press any key to continue...", True, WHITE)
+                    self.screen.blit(text, (100, self.screen_height - 50))
+                pygame.display.flip()
+
+            # Event handling
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    waiting = False
+
+            clock.tick(30)
+
+        self.game_state = 'exit'
 
     def draw_game(self):
         self.screen.fill(BLACK)
@@ -272,7 +381,7 @@ class BlackjackGame:
         money_surface = self.money_font.render(money_text, True, GOLD)
 
         self.screen.blit(hearts_surface, (int(self.screen_width * 0.05), int(self.screen_height * 0.01)))
-        self.screen.blit(money_surface, (int(self.screen_width * 0.75), int(self.screen_height * 0.02)))
+        self.screen.blit(money_surface, (int(self.screen_width * 0.7), int(self.screen_height * 0.02)))
 
         self.draw_text("Dealer's Hand:", int(self.screen_width * 0.05), int(self.screen_height * 0.08))
         for i, card in enumerate(self.dealer_hand):
@@ -320,6 +429,7 @@ class BlackjackGame:
                              int(self.screen_width * 0.15), int(self.screen_height * 0.08),
                              lambda: setattr(self, 'game_state', 'exit'))
 
+
     def draw_text(self, text: str, x: int, y: int):
         text_surface = self.font.render(text, True, WHITE)
         self.screen.blit(text_surface, (x, y))
@@ -355,10 +465,13 @@ class BlackjackGame:
                     self.load_card_back()
                     self.reposition_cards()
 
-            self.draw_game()
+            if self.game_state == "showing_ending":
+                self.show_game_over_sequence()
+            else:
+                self.draw_game()
+
             pygame.display.flip()
             self.clock.tick(60)
-
         return 'menu'
 
 
