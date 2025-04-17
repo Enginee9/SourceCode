@@ -272,7 +272,7 @@ class MainMenu:
                     pygame.quit()
                     sys.exit()
 
-            elif selected := self.draw_button("Tutorial", self.screen_width // 2 - button_width // 2,
+            elif selected := self.draw_button("Blackjack Tutorial", self.screen_width // 2 - button_width // 2,
                                               int(self.screen_height * 0.7), button_width, button_height):
                 tutorial = BlackjackTutorial(self.screen)
                 result = tutorial.run()
