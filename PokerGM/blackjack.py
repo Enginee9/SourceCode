@@ -11,9 +11,15 @@ pygame.init()
 GREEN = (53, 101, 77)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GOLD = (255, 215, 0)
 FPS = 60
-MIN_WIDTH = 400  # Minimum window width
-MIN_HEIGHT = 300  # Minimum window height
+MIN_WIDTH = 800
+MIN_HEIGHT = 600
+HEART_ICON = "♥"
+INITIAL_HEARTS = 5
+WIN_REWARD = 100000
+
 
 class Card:
     def __init__(self, suit: str, rank: str, screen_width: int, screen_height: int):
@@ -112,21 +118,23 @@ class BlackjackGame:
         self.game_state = "playing"
         self.message = ""
         self.loading = False
+        self.hearts = INITIAL_HEARTS
+        self.money = 0
         self.load_card_back()
         self.reset_game()
 
     def update_sizes(self):
-        # Enforce minimum size
         self.screen_width = max(MIN_WIDTH, self.screen.get_width())
         self.screen_height = max(MIN_HEIGHT, self.screen.get_height())
         self.font = pygame.font.SysFont('Arial', int(self.screen_height * 0.05))
         self.small_font = pygame.font.SysFont('Arial', int(self.screen_height * 0.04))
+        self.heart_font = pygame.font.SysFont('Arial', int(self.screen_height * 0.08))
+        self.money_font = pygame.font.SysFont('Arial', int(self.screen_height * 0.06))
         self.card_width = int(self.screen_width * 0.1)
         self.card_height = int(self.screen_height * 0.2)
         self.loading_size = int(self.screen_height * 0.15)
 
     def reposition_cards(self):
-        """Reposition all cards based on current screen size."""
         card_spacing = self.card_width + 10
         for i, card in enumerate(self.player_hand):
             card.x = int(self.screen_width * 0.05) + i * card_spacing
@@ -151,6 +159,12 @@ class BlackjackGame:
     def reset_game(self):
         if len(self.deck_manager.deck) < 15:
             self.deck_manager = DeckManager(self.screen_width, self.screen_height)
+
+        if self.hearts <= 0:
+            self.game_state = "game_over"
+            self.message = "No hearts left! Game Over!"
+            return
+
         self.player_hand = []
         self.dealer_hand = []
         self.deal_initial_cards()
@@ -205,14 +219,16 @@ class BlackjackGame:
         self.player_hand.append(new_card)
 
         if len(self.player_hand) >= 5 and self.calculate_hand_value(self.player_hand) <= 21:
+            self.money += WIN_REWARD
             self.game_state = "game_over"
-            self.message = "5-Card Charlie! Player wins!"
+            self.message = f"5-Card Charlie! Player wins ${WIN_REWARD:,}!"
             return
 
         player_value = self.calculate_hand_value(self.player_hand)
         if player_value > 21:
+            self.hearts -= 1
             self.game_state = "game_over"
-            self.message = "Player busts! Dealer wins."
+            self.message = f"Player busts! Lost a heart! ({self.hearts} ♥ left)"
         elif player_value == 21:
             self.player_stand()
 
@@ -232,11 +248,14 @@ class BlackjackGame:
         player_value = self.calculate_hand_value(self.player_hand)
 
         if dealer_value > 21:
-            self.message = "Dealer busts! Player wins."
+            self.money += WIN_REWARD
+            self.message = f"Dealer busts! Player wins ${WIN_REWARD:,}!"
         elif dealer_value > player_value:
-            self.message = "Dealer wins!"
+            self.hearts -= 1
+            self.message = f"Dealer wins! Lost a heart! ({self.hearts} ♥ left)"
         elif dealer_value < player_value:
-            self.message = "Player wins!"
+            self.money += WIN_REWARD
+            self.message = f"Player wins! Earned ${WIN_REWARD:,}!"
         else:
             self.message = "Push! It's a tie."
 
@@ -245,10 +264,21 @@ class BlackjackGame:
     def draw_game(self):
         self.screen.fill(BLACK)
 
+        # Draw hearts and money
+        hearts_text = f"Hearts: {HEART_ICON * self.hearts}"
+        money_text = f"Money: ${self.money:,}"
+
+        hearts_surface = self.heart_font.render(hearts_text, True, RED)
+        money_surface = self.money_font.render(money_text, True, GOLD)
+
+        self.screen.blit(hearts_surface, (int(self.screen_width * 0.05), int(self.screen_height * 0.02)))
+        self.screen.blit(money_surface, (int(self.screen_width * 0.6), int(self.screen_height * 0.02)))
+
         self.draw_text("Dealer's Hand:", int(self.screen_width * 0.05), int(self.screen_height * 0.08))
         for i, card in enumerate(self.dealer_hand):
             if i == 0 and self.game_state == "playing":
-                self.draw_hidden_card(int(self.screen_width * 0.05) + i * (self.card_width + 10), int(self.screen_height * 0.15))
+                self.draw_hidden_card(int(self.screen_width * 0.05) + i * (self.card_width + 10),
+                                      int(self.screen_height * 0.15))
             else:
                 card.draw(self.screen)
 
@@ -256,19 +286,39 @@ class BlackjackGame:
         for card in self.player_hand:
             card.draw(self.screen)
 
-        dealer_value = self.calculate_hand_value(self.dealer_hand) if self.game_state != "playing" else self.dealer_hand[1].value
+        dealer_value = self.calculate_hand_value(self.dealer_hand) if self.game_state != "playing" else \
+        self.dealer_hand[1].value
         self.draw_text(f"Dealer: {dealer_value}", int(self.screen_width * 0.75), int(self.screen_height * 0.08))
-        self.draw_text(f"Player: {self.calculate_hand_value(self.player_hand)}", int(self.screen_width * 0.75), int(self.screen_height * 0.5))
+        self.draw_text(f"Player: {self.calculate_hand_value(self.player_hand)}", int(self.screen_width * 0.75),
+                       int(self.screen_height * 0.5))
 
         self.draw_text(self.message, int(self.screen_width * 0.05), int(self.screen_height * 0.85))
 
         if self.game_state == "playing":
-            self.draw_button("Hit", int(self.screen_width * 0.75), int(self.screen_height * 0.65), int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.player_hit)
-            self.draw_button("Stand", int(self.screen_width * 0.75), int(self.screen_height * 0.75), int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.player_stand)
-            self.draw_button("Menu", int(self.screen_width * 0.05), int(self.screen_height * 0.95), int(self.screen_width * 0.15), int(self.screen_height * 0.08), lambda: setattr(self, 'game_state', 'exit'))
+            self.draw_button("Hit", int(self.screen_width * 0.75), int(self.screen_height * 0.65),
+                             int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.player_hit)
+            self.draw_button("Stand", int(self.screen_width * 0.75), int(self.screen_height * 0.75),
+                             int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.player_stand)
+            self.draw_button("Menu", int(self.screen_width * 0.05), int(self.screen_height * 0.95),
+                             int(self.screen_width * 0.15), int(self.screen_height * 0.08),
+                             lambda: setattr(self, 'game_state', 'exit'))
         elif self.game_state == "game_over":
-            self.draw_button("Play Again", int(self.screen_width * 0.75), int(self.screen_height * 0.65), int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.reset_game)
-            self.draw_button("Menu", int(self.screen_width * 0.75), int(self.screen_height * 0.75), int(self.screen_width * 0.15), int(self.screen_height * 0.08), lambda: setattr(self, 'game_state', 'exit'))
+            if self.hearts > 0:
+                self.draw_button("Play Again", int(self.screen_width * 0.75), int(self.screen_height * 0.65),
+                                 int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.reset_game)
+            else:
+                # Gray out the button when no hearts left
+                pygame.draw.rect(self.screen, (100, 100, 100), (
+                int(self.screen_width * 0.75), int(self.screen_height * 0.65), int(self.screen_width * 0.15),
+                int(self.screen_height * 0.08)))
+                text = self.small_font.render("Play Again", True, (150, 150, 150))
+                text_rect = text.get_rect(center=(int(self.screen_width * 0.75) + int(self.screen_width * 0.15) // 2,
+                                                  int(self.screen_height * 0.65) + int(self.screen_height * 0.08) // 2))
+                self.screen.blit(text, text_rect)
+
+            self.draw_button("Menu", int(self.screen_width * 0.75), int(self.screen_height * 0.75),
+                             int(self.screen_width * 0.15), int(self.screen_height * 0.08),
+                             lambda: setattr(self, 'game_state', 'exit'))
 
     def draw_text(self, text: str, x: int, y: int):
         text_surface = self.font.render(text, True, WHITE)
@@ -298,7 +348,6 @@ class BlackjackGame:
                 if event.type == pygame.QUIT:
                     return 'quit'
                 elif event.type == pygame.VIDEORESIZE:
-                    # Enforce minimum size during resize
                     new_width = max(MIN_WIDTH, event.w)
                     new_height = max(MIN_HEIGHT, event.h)
                     self.screen = pygame.display.set_mode((new_width, new_height), pygame.RESIZABLE)
