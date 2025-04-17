@@ -4,14 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c284e5c4-35bd-4fda-aa02-6e80469563e7" name="Changes" comment="update">
+    <list default="true" id="c284e5c4-35bd-4fda-aa02-6e80469563e7" name="Changes" comment="劇情">
+      <change afterPath="$PROJECT_DIR$/PokerGM/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PokerGM/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/PokerGM/menu.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -43,7 +50,9 @@
     "Python.Blackjack.executor": "Run",
     "Python.TexasHoldemTutorial.executor": "Run",
     "Python.blackjack.executor": "Run",
+    "Python.card.executor": "Run",
     "Python.menu.executor": "Run",
+    "Python.shuffle.executor": "Run",
     "Python.test.executor": "Run",
     "Python.texas_holdem.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -58,6 +67,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\PycharmProjects\SourceCode" />
       <recent name="C:\Users\85260\OneDrive - COMMON@CPCE\Learning\SEM4\Programming project\SourceCode" />
       <recent name="C:\Users\85260\OneDrive - COMMON@CPCE\Learning\SEM4\Programming project\SourceCode\pycache" />
     </key>
@@ -158,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744535823331</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="劇情">
+      <option name="closed" value="true" />
+      <created>1744877502872</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1744877502872</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -166,6 +184,7 @@
     <MESSAGE value="print" />
     <MESSAGE value="delete" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="劇情" />
+    <option name="LAST_COMMIT_MESSAGE" value="劇情" />
   </component>
 </project>

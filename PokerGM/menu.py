@@ -39,13 +39,17 @@ class MainMenu:
             self.small_font = pygame.font.Font(None, 24)
 
     def show_devil_intro(self):
-        """Show the full cinematic intro with persistent text"""
+        """Show the full cinematic intro with proper event handling"""
         self.screen.fill(BLACK)
         pygame.display.flip()
 
         # Font setup
-        title_font = pygame.font.SysFont('Arial', min(72, int(self.screen_height * 0.1)), bold=True)
-        main_font = pygame.font.SysFont('Arial', min(24, int(self.screen_height * 0.04)))
+        try:
+            title_font = pygame.font.SysFont('Arial', min(72, int(self.screen_height * 0.1)), bold=True)
+            main_font = pygame.font.SysFont('Arial', min(24, int(self.screen_height * 0.04)))
+        except:
+            title_font = pygame.font.Font(None, 72)
+            main_font = pygame.font.Font(None, 24)
 
         # Display settings
         margin = int(self.screen_width * 0.1)
@@ -71,7 +75,7 @@ class MainMenu:
             return lines
 
         def add_lines(text, color=WHITE, delay=1.0):
-            """Add new lines to the scene"""
+            """Add new lines to the scene with proper event handling"""
             nonlocal all_lines, scroll_pos
 
             if text == "":
@@ -85,7 +89,21 @@ class MainMenu:
                 scroll_pos = len(all_lines) - max_lines
 
             redraw_screen()
-            time.sleep(delay)
+
+            # Handle events during delay
+            start_time = time.time()
+            while time.time() - start_time < delay:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        return False  # Skip remaining scenes
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        return False  # Skip remaining scenes
+                pygame.time.delay(10)
+
+            return True
 
         def redraw_screen():
             """Redraw all visible text"""
@@ -114,7 +132,19 @@ class MainMenu:
         self.screen.blit(subtitle, (self.screen_width // 2 - subtitle.get_width() // 2,
                                     self.screen_height // 3 + title.get_height() + 20))
         pygame.display.flip()
-        time.sleep(2.5)
+
+        # Handle events during title screen delay
+        start_time = time.time()
+        while time.time() - start_time < 2.5:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    break
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    break
+            pygame.time.delay(10)
 
         # Start the story
         all_lines.append(("DEVIL'S BLACKJACK", RED))
@@ -150,39 +180,17 @@ class MainMenu:
             {"text": "Devil: 'Oh, nothing you'd miss...", "delay": 2.0, "color": DARK_RED},
             {"text": "Just something you don't... need.'", "delay": 2.0, "color": DARK_RED},
             {"text": "", "delay": 1.0},
-            {"text": "Press SPACE or click to continue...", "delay": 0, "color": WHITE, "blink": True}
+            {"text": "Press SPACE or click to continue...", "delay": 0, "blink": True}
         ]
 
-        # Display all scenes
+        # Display all scenes with proper event handling
         for scene in scenes:
-            color = scene.get("color", WHITE)  # Use WHITE as default if color not specified
-            add_lines(scene.get("text", ""), color, scene.get("delay", 1.0))
+            if not add_lines(scene.get("text", ""), scene.get("color", WHITE), scene.get("delay", 1.0)):
+                break  # Exit if user interrupted
 
-        # Wait for user input
+        # Wait for final input
         waiting = True
-        blink_on = True
-        last_blink = time.time()
-
         while waiting:
-            current_time = time.time()
-
-            # Handle blinking prompt
-            if current_time - last_blink > 0.5:
-                blink_on = not blink_on
-                last_blink = current_time
-
-                # Redraw everything
-                redraw_screen()
-
-                # Draw blinking prompt if needed
-                if blink_on and scenes[-1]["text"] in [line[0] for line in all_lines]:
-                    prompt_color = scenes[-1].get("color", WHITE)  # Safe color access
-                    prompt = main_font.render(scenes[-1]["text"], True, prompt_color)
-                    prompt_y = margin + (min(len(all_lines), max_lines) - 1) * line_height
-                    self.screen.blit(prompt, (margin, prompt_y))
-                    pygame.display.flip()
-
-            # Check for user input
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -191,8 +199,7 @@ class MainMenu:
                     waiting = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     waiting = False
-
-            self.clock.tick(60)
+            pygame.time.delay(10)
 
     def draw(self):
         """Draw the main menu"""
