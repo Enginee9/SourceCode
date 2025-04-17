@@ -271,8 +271,8 @@ class BlackjackGame:
         hearts_surface = self.heart_font.render(hearts_text, True, RED)
         money_surface = self.money_font.render(money_text, True, GOLD)
 
-        self.screen.blit(hearts_surface, (int(self.screen_width * 0.05), int(self.screen_height * 0.02)))
-        self.screen.blit(money_surface, (int(self.screen_width * 0.6), int(self.screen_height * 0.02)))
+        self.screen.blit(hearts_surface, (int(self.screen_width * 0.05), int(self.screen_height * 0.01)))
+        self.screen.blit(money_surface, (int(self.screen_width * 0.75), int(self.screen_height * 0.02)))
 
         self.draw_text("Dealer's Hand:", int(self.screen_width * 0.05), int(self.screen_height * 0.08))
         for i, card in enumerate(self.dealer_hand):
@@ -299,7 +299,7 @@ class BlackjackGame:
                              int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.player_hit)
             self.draw_button("Stand", int(self.screen_width * 0.75), int(self.screen_height * 0.75),
                              int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.player_stand)
-            self.draw_button("Menu", int(self.screen_width * 0.05), int(self.screen_height * 0.95),
+            self.draw_button("Menu", int(self.screen_width * 0.05), int(self.screen_height * 0.91),
                              int(self.screen_width * 0.15), int(self.screen_height * 0.08),
                              lambda: setattr(self, 'game_state', 'exit'))
         elif self.game_state == "game_over":
