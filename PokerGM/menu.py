@@ -18,7 +18,7 @@ class MainMenu:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
-        pygame.display.set_caption("Devil's Blackjack")
+        pygame.display.set_caption("Devil's Gamble")
         self.clock = pygame.time.Clock()
         self.font = None
         self.small_font = None
@@ -147,9 +147,7 @@ class MainMenu:
             pygame.time.delay(10)
 
         # Start the story
-        all_lines.append(("DEVIL'S BLACKJACK", RED))
-        all_lines.append(("Do you dare to play?", WHITE))
-        all_lines.append(("", WHITE))  # Blank line
+
 
         # Story scenes
         scenes = [
@@ -159,7 +157,7 @@ class MainMenu:
             {"text": "Man: 'Damn it! One more round... Just one more and I could've won it all back!'",
              "delay": 2.5, "color": GRAY},
             {"text": "", "delay": 0.5},
-            {"text": "Whisper: 'Seems like you could use some... luck?'", "delay": 2.0, "color": RED},
+            {"text": "A whispering voice: 'Seems like you could use some... luck?'", "delay": 2.0, "color": RED},
             {"text": "", "delay": 1.0},
             {"text": "(The man turns to see the Devil standing under a flickering streetlamp", "delay": 2.0},
             {"text": "his shadow stretching unnaturally long)", "delay": 1.5},

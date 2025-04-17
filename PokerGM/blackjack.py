@@ -269,9 +269,10 @@ class BlackjackGame:
         self.game_state = "game_over"
 
     def show_game_over_sequence(self):
-        """Display the dramatic ending sequence with proper event handling"""
+        """Display the full script while keeping all text visible"""
         self.screen.fill(BLACK)
         pygame.display.flip()
+        time.sleep(1)  # Initial pause
 
         # Font setup with fallbacks
         try:
@@ -281,81 +282,88 @@ class BlackjackGame:
             main_font = pygame.font.Font(None, 24)
             devil_font = pygame.font.Font(None, 28)
 
-        # Script lines with formatting and timing
+        # Full script with formatting
         script = [
-            (devil_font, RED, "The Devil: \"You lose.\"", 2.5),
-            (main_font, WHITE, "", 1.0),
-            (main_font, WHITE, "A man jolts awake in his shabby apartment.", 2.0),
-            (main_font, WHITE, "The mirror shows him rapidly aging, hair turning gray.", 2.5),
-            (main_font, WHITE, "", 1.0),
-            (main_font, GRAY, "Man: \"What... did you take?\"", 2.0),
-            (main_font, WHITE, "", 1.0),
-            (devil_font, RED, "The Devil: \"Time. Health. Love.\"", 2.5),
-            (devil_font, RED, "\"Things you never really needed, did you?\"", 2.5),
-            (devil_font, RED, "\"All you ever wanted was money.\"", 2.5),
-            (main_font, WHITE, "", 1.0),
-            (main_font, (150, 150, 150), "(A man collapses as his piles of cash crumble into ash.)", 3.0),
-            (main_font, WHITE, "", 1.5),
-            (main_font, WHITE, "Another night. A new gambler enters the casino.", 2.0),
-            (main_font, WHITE, "The Devil steps out of the shadows...", 2.0),
-            (main_font, WHITE, "", 1.0),
-            (devil_font, RED, "The Devil: \"Will you be next?\"", 3.0),
-            (main_font, WHITE, "", 2.0),
-            (main_font, WHITE, "Press any key to continue...", 0)
+            (devil_font, RED, "The Devil: \"You lose.\""),
+            (main_font, WHITE, ""),  # Empty line
+            (main_font, WHITE, "A man jolts awake in his shabby apartment."),
+            (main_font, WHITE, "The mirror shows him rapidly aging, hair turning gray."),
+            (main_font, WHITE, ""),
+            (main_font, GRAY, "Man: \"What... did you take?\""),
+            (main_font, WHITE, ""),
+            (devil_font, RED, "The Devil: \"Time. Health. Love.\""),
+            (devil_font, RED, "\"Things you never really needed, did you?\""),
+            (devil_font, RED, "\"All you ever wanted was money.\""),
+            (main_font, WHITE, ""),
+            (main_font, (150, 150, 150), "(A man collapses as his piles of cash crumble into ash.)"),
+            (main_font, WHITE, ""),
+            (main_font, WHITE, "Another night. A new gambler enters the casino."),
+            (main_font, WHITE, "The Devil steps out of the shadows..."),
+            (main_font, WHITE, ""),
+            (devil_font, RED, "The Devil: \"Will you be next?\""),
+            (main_font, WHITE, ""),
+            (main_font, WHITE, "Press any key to continue...")
         ]
 
-        y_pos = 100
+        y_pos = 50  # Starting position
         line_height = 30
+        visible_lines = []
         clock = pygame.time.Clock()
 
-        for font, color, line, delay in script:
-            # Handle events before each line
+        for font, color, line in script:
+            # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     self.game_state = 'exit'
-                    return  # Immediate exit if user clicks/presses key
+                    return
 
+            if line:  # Only process if there's text
+                visible_lines.append((font, color, line, y_pos))
+                y_pos += line_height
+
+                # Check if we need to scroll
+                if y_pos > self.screen_height - 50:
+                    # Shift all lines up
+                    visible_lines = [(f, c, t, y - line_height) for (f, c, t, y) in visible_lines]
+                    y_pos -= line_height
+
+            # Redraw all visible lines
             self.screen.fill(BLACK)
-
-            if line:  # Only render if there's actual text
-                text = font.render(line, True, color)
-                self.screen.blit(text, (100, y_pos))
+            for font, color, text, y in visible_lines:
+                rendered = font.render(text, True, color)
+                self.screen.blit(rendered, (50, y))
 
             pygame.display.flip()
 
-            # Handle timed display with event checking
-            if delay > 0:
-                start_time = time.time()
-                while time.time() - start_time < delay:
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            pygame.quit()
-                            sys.exit()
-                        elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                            self.game_state = 'exit'
-                            return
-                    clock.tick(30)
+            # Pause between lines (shorter for empty lines)
+            time.sleep(0.5 if not line else 2.0 if color == RED else 1.5)
 
-            y_pos += line_height
-            if y_pos > self.screen_height - 100:
-                y_pos = 100
-
-        # Final wait for continuation
+        # Final prompt with blinking effect
+        blink = True
+        last_blink = time.time()
         waiting = True
-        blink_time = pygame.time.get_ticks()
         while waiting:
-            current_time = pygame.time.get_ticks()
+            current_time = time.time()
 
-            # Blinking "continue" prompt
-            if current_time - blink_time > 500:
-                blink_time = current_time
-                self.screen.fill(BLACK, (100, self.screen_height - 50, self.screen_width - 200, 30))
-                if int(current_time / 500) % 2 == 0:
-                    text = main_font.render("Press any key to continue...", True, WHITE)
-                    self.screen.blit(text, (100, self.screen_height - 50))
+            # Handle blinking
+            if current_time - last_blink > 0.5:
+                blink = not blink
+                last_blink = current_time
+
+                # Redraw everything
+                self.screen.fill(BLACK)
+                for font, color, text, y in visible_lines[:-1]:  # All except last line
+                    rendered = font.render(text, True, color)
+                    self.screen.blit(rendered, (50, y))
+
+                # Only show "continue" when blinking
+                if blink:
+                    rendered = visible_lines[-1][0].render(visible_lines[-1][2], True, visible_lines[-1][1])
+                    self.screen.blit(rendered, (50, visible_lines[-1][3]))
+
                 pygame.display.flip()
 
             # Event handling

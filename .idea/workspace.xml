@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c284e5c4-35bd-4fda-aa02-6e80469563e7" name="Changes" comment="money">
+    <list default="true" id="c284e5c4-35bd-4fda-aa02-6e80469563e7" name="Changes" comment="script">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PokerGM/blackjack.py" beforeDir="false" afterPath="$PROJECT_DIR$/PokerGM/blackjack.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PokerGM/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/PokerGM/menu.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,7 +209,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744901786338</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="script">
+      <option name="closed" value="true" />
+      <created>1744908610174</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1744908610174</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -220,6 +229,7 @@
     <MESSAGE value="tutorial" />
     <MESSAGE value="heart" />
     <MESSAGE value="money" />
-    <option name="LAST_COMMIT_MESSAGE" value="money" />
+    <MESSAGE value="script" />
+    <option name="LAST_COMMIT_MESSAGE" value="script" />
   </component>
 </project>
