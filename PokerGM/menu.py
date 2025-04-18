@@ -125,7 +125,7 @@ class MainMenu:
             pygame.display.flip()
 
         # Show title screen
-        title = title_font.render("DEVIL'S BLACKJACK", True, RED)
+        title = title_font.render("DEVIL'S GAMBLE", True, RED)
         subtitle = main_font.render("Do you dare to play?", True, WHITE)
 
         self.screen.blit(title, (self.screen_width // 2 - title.get_width() // 2, self.screen_height // 3))
