@@ -24,7 +24,7 @@ class PokerGUI:
     # --- Constants ---
     CARD_WIDTH = 72
     CARD_HEIGHT = 100
-    TABLE_GREEN = "#006400"
+    TABLE_GREEN = "#121212"
     HEART_ICON = "♥"
     SEQ_FONT_NORMAL = ("Arial", 16)
     SEQ_FONT_DEVIL = ("Arial", 18, "bold")
@@ -1194,7 +1194,7 @@ class PokerGUI:
             ("", None, 1000),
             ("The Devil: \"Perhaps... you'll try again?\"", "devil", 3000),
             ("", None, 1000),
-            ("戒賭熱線1834633(按2字)", "prompt", -1),
+            ("戒賭熱線1834633(按2字)", "prompt", 10),
             ("", None, 1000),
             ("\n\n(Press any key or click to close the table)", "prompt", 0)
         ]

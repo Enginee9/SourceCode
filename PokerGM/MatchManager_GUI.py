@@ -12,7 +12,7 @@ except ImportError as e:
     raise
 
 # Define constants
-INITIAL_HEARTS = 1
+INITIAL_HEARTS = 3
 HEART_CHIP_EXCHANGE_AMOUNT = 1000
 
 class PokerGame:

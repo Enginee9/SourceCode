@@ -1,5 +1,5 @@
 import pygame
-from texas_holdem import Card
+from blackjack import Card
 
 # Constants
 WHITE = (255, 255, 255)

@@ -1,9 +1,9 @@
 import pygame
 import sys
 import time
+from PokerGUI import PokerGUI
 from blackjack import BlackjackGame
 from tutorial import BlackjackTutorial
-from texas_holdem import TexasHoldemGame
 from TexasHoldemTutorial import TexasHoldemTutorial
 
 # Constants
@@ -17,7 +17,7 @@ GRAY = (200, 200, 200)
 class MainMenu:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)
         pygame.display.set_caption("Devil's Gamble")
         self.clock = pygame.time.Clock()
         self.font = None
@@ -264,7 +264,7 @@ class MainMenu:
 
             elif selected := self.draw_button("Texas Hold'em", self.screen_width // 2 - button_width // 2,
                                               int(self.screen_height * 0.55), button_width, button_height):
-                game = TexasHoldemGame(self.screen)
+                game = PokerGUI(self.screen)
                 result = game.run()
                 if result == 'quit':
                     pygame.quit()
