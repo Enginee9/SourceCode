@@ -12,7 +12,7 @@ except ImportError as e:
     raise
 
 # Define constants
-INITIAL_HEARTS = 1
+INITIAL_HEARTS = 5
 HEART_CHIP_EXCHANGE_AMOUNT = 1000
 
 class PokerGame:
@@ -120,7 +120,7 @@ class PokerGame:
             if bot_name in self.players and self.players[bot_name].get('chips', 0) <= 0:
                 print(f"DEBUG MM: StartNewRound - Bot '{bot_name}' has busted. Player wins!")
                 self.game_over = True; self._game_over_reason = 'bot_bust'
-                final_message = f"{self.human_player_name} wins! Bot {busted_bot_name} is out of chips." # Use busted_bot_name if needed
+                final_message = f"{self.human_player_name} wins! Bot {self.busted_bot_name} is out of chips." # Use busted_bot_name if needed
                 # Correction: Assign busted bot name properly
                 busted_bot_name = bot_name # Assign inside the loop when found
                 final_message = f"{self.human_player_name} wins! Bot {busted_bot_name} is out of chips."
