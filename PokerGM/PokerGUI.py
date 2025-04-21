@@ -1663,7 +1663,7 @@ class PokerGUI:
     def _return_to_menu(self):
         """Handles the 'Return to Menu' button click: Confirms and closes this window."""
         # Ask for confirmation
-        if messagebox.askokcancel("Return to Menu", "Leave the current game and return to the main menu?\nGame progress will be lost."):
+        if messagebox.askokcancel("Menu", "Leave the current game and return to the main menu?\nGame progress will be lost."):
             self.add_log_message("--- Returning to Main Menu ---")
             try:
                 # --- Cancel Pending Jobs ---

@@ -5,8 +5,8 @@ from blackjack import Card
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 FPS = 60
-MIN_WIDTH = 400  # Minimum window width
-MIN_HEIGHT = 300  # Minimum window height
+MIN_WIDTH = 1200  # Minimum window width
+MIN_HEIGHT = 800  # Minimum window height
 
 
 class BlackjackTutorial:
@@ -62,9 +62,9 @@ class BlackjackTutorial:
                     "- Blackjack (Ace + 10) = Win"
                 ],
                 "visuals": [
-                    {"card": "ace", "x": int(self.screen_width * 0.55), "y": int(self.screen_height * 0.5), "label": "Player Card"},
+                    {"card": "ace", "x": int(self.screen_width * 0.5), "y": int(self.screen_height * 0.5), "label": "Player Card"},
                     {"card": "10", "x": int(self.screen_width * 0.7), "y": int(self.screen_height * 0.5), "label": "Player Card"},
-                    {"card": "king", "x": int(self.screen_width * 0.55), "y": int(self.screen_height * 0.75), "label": "Dealer Hidden"},
+                    {"card": "king", "x": int(self.screen_width * 0.5), "y": int(self.screen_height * 0.75), "label": "Dealer Hidden"},
                     {"card": "2", "x": int(self.screen_width * 0.7), "y": int(self.screen_height * 0.75), "label": "Dealer Face Up"}
                 ]
             },
@@ -79,11 +79,11 @@ class BlackjackTutorial:
                     "Press Esc to return to menu"
                 ],
                 "visuals": [
-                    {"card": "2", "x": int(self.screen_width * 0.5), "y": int(self.screen_height * 0.5), "label": "2"},
-                    {"card": "3", "x": int(self.screen_width * 0.55), "y": int(self.screen_height * 0.55), "label": "3"},
-                    {"card": "4", "x": int(self.screen_width * 0.6), "y": int(self.screen_height * 0.6), "label": "4"},
-                    {"card": "5", "x": int(self.screen_width * 0.65), "y": int(self.screen_height * 0.65), "label": "5"},
-                    {"card": "6", "x": int(self.screen_width * 0.7), "y": int(self.screen_height * 0.7), "label": "6"}
+                    {"card": "2", "x": int(self.screen_width * 0.55), "y": int(self.screen_height * 0.1), "label": "2"},
+                    {"card": "3", "x": int(self.screen_width * 0.7), "y": int(self.screen_height * 0.1), "label": "3"},
+                    {"card": "4", "x": int(self.screen_width * 0.55), "y": int(self.screen_height * 0.4), "label": "4"},
+                    {"card": "5", "x": int(self.screen_width * 0.7), "y": int(self.screen_height * 0.4), "label": "5"},
+                    {"card": "6", "x": int(self.screen_width * 0.55), "y": int(self.screen_height * 0.7), "label": "6"}
                 ]
             }
         ]
@@ -164,6 +164,6 @@ class BlackjackTutorial:
 
 if __name__ == "__main__":
     pygame.init()
-    screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)  # Changed to 1920x1080
+    screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)  # Changed to 1920x1080
     tutorial = BlackjackTutorial(screen)
     tutorial.run()
