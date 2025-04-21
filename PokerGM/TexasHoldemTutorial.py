@@ -29,7 +29,7 @@ except Exception as e:
 # Constants
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-DARK_GREEN = (0, 80, 0) # A nice background color
+DARK_GREEN = (1, 2, 3) # A nice background color
 FPS = 60
 # Use minimum dimensions similar to Blackjack for consistency?
 MIN_WIDTH = 1200
