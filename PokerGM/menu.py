@@ -104,7 +104,7 @@ class MainMenu:
         self.root.withdraw()  # Hide menu
         try:
             pygame.init()
-            screen = pygame.display.set_mode((800, 600))
+            screen = pygame.display.set_mode((1200, 800))
             game = BlackjackGame(screen)
             result = game.run()
             pygame.quit()
@@ -135,7 +135,7 @@ class MainMenu:
         self.root.withdraw()
         try:
             pygame.init()
-            screen = pygame.display.set_mode((800, 600))
+            screen = pygame.display.set_mode((1200, 800))
             tutorial = BlackjackTutorial(screen)
             result = tutorial.run()
             pygame.quit()
