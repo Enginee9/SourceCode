@@ -10,18 +10,17 @@ pygame.init()
 # Constants
 GREEN = (53, 101, 77)
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
+BLACK = (20, 20, 20)  # Changed to match menu's dark smoky background
+RED = (255, 50, 50)   # Adjusted to match Devil's dialogue color
 GOLD = (255, 215, 0)
 DARK_RED = (150, 0, 0)
-GRAY = (200, 200, 200)
+GRAY = (200, 200, 200)  # Matches Man's dialogue color
 FPS = 60
 MIN_WIDTH = 800
 MIN_HEIGHT = 600
 HEART_ICON = "♥"
 INITIAL_HEARTS = 5
 WIN_REWARD = 100000
-
 
 class Card:
     def __init__(self, suit: str, rank: str, screen_width: int, screen_height: int):
@@ -55,7 +54,7 @@ class Card:
         card_width = int(self.screen_width * 0.1)
         card_height = int(self.screen_height * 0.2)
 
-        filename = f"{rank_map[self.rank]}_of_{suit_map[self.suit]}.jpg"
+        filename = f"{rank_map[self.rank]}_of_{suit_map[self.suit]}.jpg"  # Changed to .png based on memory
         try:
             image = pygame.image.load(f"cards/{filename}")
             return pygame.transform.scale(image, (card_width, card_height))
@@ -82,7 +81,6 @@ class Card:
     def draw(self, surface):
         surface.blit(self.image, (self.x, self.y))
 
-
 class DeckManager:
     def __init__(self, screen_width: int, screen_height: int):
         self.deck = []
@@ -107,7 +105,6 @@ class DeckManager:
         card.y = target_y
         return card
 
-
 class BlackjackGame:
     def __init__(self, screen):
         self.screen = screen
@@ -124,6 +121,10 @@ class BlackjackGame:
         self.money = 0
         self.load_card_back()
         self.reset_game()
+        # Flicker effect for ending sequence
+        self.flicker = [255, 200, 255, 180, 255]  # Matches menu.py
+        self.flicker_index = 0
+        self.flicker_timer = 0
 
     def update_sizes(self):
         self.screen_width = max(MIN_WIDTH, self.screen.get_width())
@@ -132,6 +133,7 @@ class BlackjackGame:
         self.small_font = pygame.font.SysFont('Arial', int(self.screen_height * 0.04))
         self.heart_font = pygame.font.SysFont('Arial', int(self.screen_height * 0.08))
         self.money_font = pygame.font.SysFont('Arial', int(self.screen_height * 0.06))
+        self.dialogue_font = pygame.font.SysFont('Arial', 28, bold=True)  # Matches menu.py
         self.card_width = int(self.screen_width * 0.1)
         self.card_height = int(self.screen_height * 0.2)
         self.loading_size = int(self.screen_height * 0.15)
@@ -150,7 +152,7 @@ class BlackjackGame:
     def load_card_back(self):
         global CARD_BACK
         try:
-            back_image = pygame.image.load("cards/card_back.jpg")
+            back_image = pygame.image.load("cards/card_back.jpg")  # Changed to .png
             CARD_BACK = pygame.transform.scale(back_image, (self.card_width, self.card_height))
         except:
             print("Card back image not found")
@@ -163,7 +165,7 @@ class BlackjackGame:
             self.deck_manager = DeckManager(self.screen_width, self.screen_height)
 
         if self.hearts <= 0:
-            self.game_state = "showing_ending"  # New state for showing the ending
+            self.game_state = "showing_ending"
             return
 
         self.player_hand = []
@@ -231,7 +233,7 @@ class BlackjackGame:
             self.game_state = "game_over"
             self.message = f"Player busts! Lost a heart! ({self.hearts} ♥ left)"
             if self.hearts <= 0:
-                self.show_game_over_sequence()  # Directly call here
+                self.game_state = "showing_ending"
                 return
         elif player_value == 21:
             self.player_stand()
@@ -258,7 +260,7 @@ class BlackjackGame:
             self.hearts -= 1
             self.message = f"Dealer wins! Lost a heart! ({self.hearts} ♥ left)"
             if self.hearts <= 0:
-                self.show_game_over_sequence()  # Directly call here
+                self.game_state = "showing_ending"
                 return
         elif dealer_value < player_value:
             self.money += WIN_REWARD
@@ -268,113 +270,94 @@ class BlackjackGame:
 
         self.game_state = "game_over"
 
+    def render_dialogue_text(self, text, speaker, y_offset):
+        """Render dialogue text with speaker label and appropriate color."""
+        # Colors to match menu.py
+        color = (
+            GRAY if speaker == "Man" else
+            RED if speaker == "Devil" else
+            (150, 150, 150) if speaker == "Whisper" else
+            (180, 180, 180)  # Narration color
+        )
+        if speaker and speaker != "Narration":
+            speaker_text = self.dialogue_font.render(f"{speaker}:", True, color)
+            self.screen.blit(speaker_text, (50, y_offset))
+            y_offset += 40
+        # Wrap text to fit screen
+        words = text.split()
+        lines = []
+        current_line = []
+        line_width = 0
+        max_width = self.screen_width - 100  # Match menu.py's 1100
+        for word in words:
+            word_surface = self.dialogue_font.render(word, True, color)
+            word_width = word_surface.get_width()
+            if line_width + word_width <= max_width:
+                current_line.append(word)
+                line_width += word_width + self.dialogue_font.size(" ")[0]
+            else:
+                lines.append(" ".join(current_line))
+                current_line = [word]
+                line_width = word_width + self.dialogue_font.size(" ")[0]
+        lines.append(" ".join(current_line))
+        for i, line in enumerate(lines):
+            line_surface = self.dialogue_font.render(line, True, color)
+            self.screen.blit(line_surface, (50, y_offset + i * 40))
+        return y_offset + len(lines) * 40
+
     def show_game_over_sequence(self):
-        """Display the full script while keeping all text visible"""
-        self.screen.fill(BLACK)
-        pygame.display.flip()
-        time.sleep(1)  # Initial pause
-
-        # Font setup with fallbacks
-        try:
-            main_font = pygame.font.SysFont('Arial', 24)
-            devil_font = pygame.font.SysFont('Arial', 28, bold=True)
-        except:
-            main_font = pygame.font.Font(None, 24)
-            devil_font = pygame.font.Font(None, 28)
-
-        # Full script with formatting
-        script = [
-            (devil_font, RED, "The Devil: \"You lose.\""),
-            (main_font, WHITE, ""),  # Empty line
-            (main_font, WHITE, "A man jolts awake in his shabby apartment."),
-            (main_font, WHITE, "The mirror shows him rapidly aging, hair turning gray."),
-            (main_font, WHITE, ""),
-            (main_font, GRAY, "Man: \"What... did you take?\""),
-            (main_font, WHITE, ""),
-            (devil_font, RED, "The Devil: \"Time. Health. Love.\""),
-            (devil_font, RED, "\"Things you never really needed, did you?\""),
-            (devil_font, RED, "\"All you ever wanted was money.\""),
-            (main_font, WHITE, ""),
-            (main_font, (150, 150, 150), "(A man collapses as his piles of cash crumble into ash.)"),
-            (main_font, WHITE, ""),
-            (main_font, WHITE, "Another night. A new gambler enters the casino."),
-            (main_font, WHITE, "The Devil steps out of the shadows..."),
-            (main_font, WHITE, ""),
-            (devil_font, RED, "The Devil: \"Will you be next?\""),
-            (main_font, WHITE, ""),
-            (main_font, WHITE, "Press any key to continue...")
+        """Display the ending sequence in the style of the intro scene."""
+        dialogue = [
+            ("Devil", "You lose."),
+            ("Narration", "(A man jolts awake in his shabby apartment, the air heavy with regret.)"),
+            ("Narration", "(The mirror reflects his face, now etched with unnatural age, hair turning gray.)"),
+            ("Man", "What… did you take?"),
+            ("Devil", "Time. Health. Love."),
+            ("Devil", "Things you never really needed, did you?"),
+            ("Devil", "All you ever wanted was money."),
+            ("Narration", "(The man collapses, his piles of cash crumbling into ash.)"),
+            ("Narration", "(Another night. A new gambler enters the casino.)"),
+            ("Narration", "(The Devil steps out of the shadows, his smile sharp as ever.)"),
+            ("Devil", "Will you be next?")
         ]
+        current_dialogue_index = 0
+        running = True
+        skip = False
 
-        y_pos = 50  # Starting position
-        line_height = 30
-        visible_lines = []
-        clock = pygame.time.Clock()
-
-        for font, color, line in script:
-            # Handle events
+        while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     self.game_state = 'exit'
                     return
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        current_dialogue_index += 1
+                        if current_dialogue_index >= len(dialogue):
+                            running = False
+                    elif event.key == pygame.K_ESCAPE:
+                        running = False
+                        skip = True
 
-            if line:  # Only process if there's text
-                visible_lines.append((font, color, line, y_pos))
-                y_pos += line_height
+            # Update flicker effect
+            self.flicker_timer += 1
+            if self.flicker_timer >= 10:
+                self.flicker_index = (self.flicker_index + 1) % len(self.flicker)
+                self.flicker_timer = 0
 
-                # Check if we need to scroll
-                if y_pos > self.screen_height - 50:
-                    # Shift all lines up
-                    visible_lines = [(f, c, t, y - line_height) for (f, c, t, y) in visible_lines]
-                    y_pos -= line_height
+            # Draw scene
+            self.screen.fill((20, 20, 20, self.flicker[self.flicker_index]))
 
-            # Redraw all visible lines
-            self.screen.fill(BLACK)
-            for font, color, text, y in visible_lines:
-                rendered = font.render(text, True, color)
-                self.screen.blit(rendered, (50, y))
+            # Draw dialogue
+            if current_dialogue_index < len(dialogue):
+                speaker, text = dialogue[current_dialogue_index]
+                self.render_dialogue_text(text, speaker, 300)  # Match menu.py's text position
+
+            # Draw skip prompt
+            skip_text = self.dialogue_font.render("Press SPACE to continue, ESC to skip", True, (150, 150, 150))
+            self.screen.blit(skip_text, (10, self.screen_height - 40))
 
             pygame.display.flip()
-
-            # Pause between lines (shorter for empty lines)
-            time.sleep(0.5 if not line else 2.0 if color == RED else 1.5)
-
-        # Final prompt with blinking effect
-        blink = True
-        last_blink = time.time()
-        waiting = True
-        while waiting:
-            current_time = time.time()
-
-            # Handle blinking
-            if current_time - last_blink > 0.5:
-                blink = not blink
-                last_blink = current_time
-
-                # Redraw everything
-                self.screen.fill(BLACK)
-                for font, color, text, y in visible_lines[:-1]:  # All except last line
-                    rendered = font.render(text, True, color)
-                    self.screen.blit(rendered, (50, y))
-
-                # Only show "continue" when blinking
-                if blink:
-                    rendered = visible_lines[-1][0].render(visible_lines[-1][2], True, visible_lines[-1][1])
-                    self.screen.blit(rendered, (50, visible_lines[-1][3]))
-
-                pygame.display.flip()
-
-            # Event handling
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                    waiting = False
-
-            clock.tick(30)
+            self.clock.tick(60)
 
         self.game_state = 'exit'
 
@@ -385,7 +368,7 @@ class BlackjackGame:
         hearts_text = f"Hearts: {HEART_ICON * self.hearts}"
         money_text = f"Money: ${self.money:,}"
 
-        hearts_surface = self.heart_font.render(hearts_text, True, RED)
+        hearts_surface = self.heart_font.render(hearts_text, True, DARK_RED)  # Adjusted to darker red
         money_surface = self.money_font.render(money_text, True, GOLD)
 
         self.screen.blit(hearts_surface, (int(self.screen_width * 0.05), int(self.screen_height * 0.01)))
@@ -424,7 +407,6 @@ class BlackjackGame:
                 self.draw_button("Play Again", int(self.screen_width * 0.75), int(self.screen_height * 0.65),
                                  int(self.screen_width * 0.15), int(self.screen_height * 0.08), self.reset_game)
             else:
-                # Gray out the button when no hearts left
                 pygame.draw.rect(self.screen, (100, 100, 100), (
                 int(self.screen_width * 0.75), int(self.screen_height * 0.65), int(self.screen_width * 0.15),
                 int(self.screen_height * 0.08)))
@@ -436,7 +418,6 @@ class BlackjackGame:
             self.draw_button("Menu", int(self.screen_width * 0.75), int(self.screen_height * 0.75),
                              int(self.screen_width * 0.15), int(self.screen_height * 0.08),
                              lambda: setattr(self, 'game_state', 'exit'))
-
 
     def draw_text(self, text: str, x: int, y: int):
         text_surface = self.font.render(text, True, WHITE)
@@ -482,8 +463,7 @@ class BlackjackGame:
             self.clock.tick(60)
         return 'menu'
 
-
 if __name__ == "__main__":
-    screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)  # Match menu.py resolution
     game = BlackjackGame(screen)
     game.run()

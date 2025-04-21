@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c284e5c4-35bd-4fda-aa02-6e80469563e7" name="Changes" comment="script">
+    <list default="true" id="c284e5c4-35bd-4fda-aa02-6e80469563e7" name="Changes" comment="Gamble">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_4_2025_17_26_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_4_2025_17_26__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PokerGM/TexasHoldemTutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/PokerGM/TexasHoldemTutorial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PokerGM/blackjack.py" beforeDir="false" afterPath="$PROJECT_DIR$/PokerGM/blackjack.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PokerGM/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/PokerGM/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PokerGM/tutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/PokerGM/tutorial.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,27 +49,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Python.Blackjack.executor&quot;: &quot;Run&quot;,
-    &quot;Python.TexasHoldemTutorial.executor&quot;: &quot;Run&quot;,
-    &quot;Python.blackjack.executor&quot;: &quot;Run&quot;,
-    &quot;Python.card.executor&quot;: &quot;Run&quot;,
-    &quot;Python.menu.executor&quot;: &quot;Run&quot;,
-    &quot;Python.shuffle.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.texas_holdem.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/85260/OneDrive - COMMON@CPCE/Learning/SEM4/Programming project/SourceCode&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Python.Blackjack.executor": "Run",
+    "Python.MatchManager_GUI.executor": "Run",
+    "Python.PokerGUI.executor": "Run",
+    "Python.TexasHoldemTutorial.executor": "Run",
+    "Python.blackjack.executor": "Run",
+    "Python.card.executor": "Run",
+    "Python.menu.executor": "Run",
+    "Python.shuffle.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.texas_holdem.executor": "Run",
+    "Python.tutorial.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/85260/OneDrive - COMMON@CPCE/Learning/SEM4/Programming project/SourceCode",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\USER\PycharmProjects\SourceCode" />
@@ -224,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744909140085</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Gamble">
+      <option name="closed" value="true" />
+      <created>1744993426883</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1744993426883</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -237,6 +253,7 @@
     <MESSAGE value="heart" />
     <MESSAGE value="money" />
     <MESSAGE value="script" />
-    <option name="LAST_COMMIT_MESSAGE" value="script" />
+    <MESSAGE value="Gamble" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gamble" />
   </component>
 </project>

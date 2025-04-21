@@ -164,6 +164,6 @@ class BlackjackTutorial:
 
 if __name__ == "__main__":
     pygame.init()
-    screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)  # Changed to 1920x1080
     tutorial = BlackjackTutorial(screen)
     tutorial.run()

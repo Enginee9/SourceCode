@@ -1,5 +1,3 @@
-# --- START OF FILE TexasHoldemTutorial.py ---
-
 import pygame
 import os # Needed for path joining
 
@@ -544,4 +542,3 @@ if __name__ == "__main__":
     finally:
         print("Quitting Pygame.")
         pygame.quit() # Cleanly exit Pygame
-
