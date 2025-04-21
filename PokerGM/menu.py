@@ -116,7 +116,7 @@ class MainMenu:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Devil's Gamble - Main Menu")
-        self.root.geometry("800x600")
+        self.root.geometry("1200x800")
         self.root.configure(bg="#1a1a1a")
 
         # Main frame for centering content
