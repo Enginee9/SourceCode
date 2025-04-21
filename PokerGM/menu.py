@@ -272,7 +272,7 @@ class MainMenu:
         self.root.withdraw()
         try:
             pygame.init()
-            screen = pygame.display.set_mode((800, 600))
+            screen = pygame.display.set_mode((1200, 800))
             tutorial = TexasHoldemTutorial(screen)
             result = tutorial.run()
             pygame.quit()
