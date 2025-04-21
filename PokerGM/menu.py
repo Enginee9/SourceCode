@@ -10,7 +10,7 @@ class MainMenu:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Devil's Gamble - Main Menu")
-        self.root.geometry("800x600")
+        self.root.geometry("1200x800")
         self.root.configure(bg="#1a1a1a")  # Dark background for theme
 
         # Main frame for centering content
@@ -153,7 +153,7 @@ class MainMenu:
         self.root.withdraw()
         try:
             pygame.init()
-            screen = pygame.display.set_mode((800, 600))
+            screen = pygame.display.set_mode((1200, 800))
             tutorial = TexasHoldemTutorial(screen)
             result = tutorial.run()
             pygame.quit()
