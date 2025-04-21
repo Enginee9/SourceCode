@@ -32,8 +32,8 @@ BLACK = (0, 0, 0)
 DARK_GREEN = (0, 80, 0) # A nice background color
 FPS = 60
 # Use minimum dimensions similar to Blackjack for consistency?
-MIN_WIDTH = 800
-MIN_HEIGHT = 600
+MIN_WIDTH = 1200
+MIN_HEIGHT = 800
 INITIAL_WIDTH = 1000 # Start a bit larger maybe
 INITIAL_HEIGHT = 750
 
@@ -163,11 +163,11 @@ class TexasHoldemTutorial:
                     # Visuals showing progression
                     {"card": "Jc", "x": 0.65, "y": 0.3, "label": "Pre-Flop"}, # Hole cards
                     {"card": "Qs", "x": 0.80, "y": 0.3, "label": "Pre-Flop"},
-                    {"card": "2h", "x": 0.25, "y": 0.65, "label": "Flop"},     # Flop cards
-                    {"card": "10d", "x": 0.40, "y": 0.65, "label": "Flop"},
-                    {"card": "Kh", "x": 0.55, "y": 0.65, "label": "Flop"},
-                    {"card": "As", "x": 0.70, "y": 0.65, "label": "Turn"},      # Turn card
-                    {"card": "back", "x": 0.85, "y": 0.65, "label": "River"}    # River card (shown as back initially)
+                    {"card": "2h", "x": 0.25, "y": 0.75, "label": "Flop"},     # Flop cards
+                    {"card": "10d", "x": 0.40, "y": 0.75, "label": "Flop"},
+                    {"card": "Kh", "x": 0.55, "y": 0.75, "label": "Flop"},
+                    {"card": "As", "x": 0.70, "y": 0.75, "label": "Turn"},      # Turn card
+                    {"card": "back", "x": 0.85, "y": 0.75, "label": "River"}    # River card (shown as back initially)
                 ]
             },
             {
@@ -507,7 +507,7 @@ if __name__ == "__main__":
     screen = None # Initialize screen to None
     try:
         screen = pygame.display.set_mode((INITIAL_WIDTH, INITIAL_HEIGHT), pygame.RESIZABLE)
-        pygame.display.set_caption("Texas Hold'em Tutorial (Test Mode)")
+        pygame.display.set_caption("Texas Hold'em Tutorial")
 
         # Create and run the tutorial instance
         tutorial = TexasHoldemTutorial(screen)
