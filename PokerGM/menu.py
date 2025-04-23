@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import pygame
+import traceback # Add traceback
 from blackjack import BlackjackGame
 from tutorial import BlackjackTutorial
 from PokerGUI import PokerGUI
