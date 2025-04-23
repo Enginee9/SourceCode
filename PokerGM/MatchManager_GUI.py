@@ -5,7 +5,7 @@ from HandEvaluator import HandEvaluator, HandRank # Import HandRank if needed fo
 from BotPlayer import BotPlayer
 # Make sure these files exist and contain the necessary classes
 # Define constants
-INITIAL_HEARTS = 1 # Default starting hearts, can be overridden
+INITIAL_HEARTS = 5 # Default starting hearts, can be overridden
 HEART_CHIP_EXCHANGE_AMOUNT = 1000 # Amount of chips received for 1 heart
 
 class PokerGame:

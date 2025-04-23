@@ -255,54 +255,60 @@ class PokerGUI:
         self.game_frame.rowconfigure(0, weight=1) # Top Bot Area Row
         self.game_frame.rowconfigure(1, weight=1) # Middle Area Row (Pot/Info, maybe Bot)
         self.game_frame.rowconfigure(2, weight=3) # Player Area Row (more weight)
-        self.game_frame.rowconfigure(3, weight=0, minsize=50) # Bottom Row for Return Button, give min height
 
-        # --- Community Card Area (Center Top) ---
-        community_frame = ttk.LabelFrame(self.game_frame, text="Community Cards", padding="10", style="GreenBG.TLabelframe")
-        community_frame.grid(row=0, column=1, rowspan=1, pady=10, sticky="n") # Place North
+        community_frame = ttk.LabelFrame(self.game_frame, text="Community Cards", padding="10",
+                                         style="GreenBG.TLabelframe")
+        community_frame.grid(row=0, column=1, rowspan=1, pady=10, sticky="n")  # Place North
         self.community_card_labels = []
-        card_area_frame = ttk.Frame(community_frame, style="Game.TFrame") # Inner frame for cards
+        card_area_frame = ttk.Frame(community_frame, style="Game.TFrame")  # Inner frame for cards
         card_area_frame.pack(expand=True, pady=5)
         for i in range(5):
             # Create label, use card back image initially or blank if missing
-            img_to_use = self.card_back_image if self.card_back_image else ImageTk.PhotoImage(Image.new('RGB', (self.CARD_WIDTH, self.CARD_HEIGHT), self.TABLE_GREEN)) # Blank placeholder
+            img_to_use = self.card_back_image if self.card_back_image else ImageTk.PhotoImage(
+                Image.new('RGB', (self.CARD_WIDTH, self.CARD_HEIGHT), self.TABLE_GREEN))  # Blank placeholder
             lbl = ttk.Label(card_area_frame, image=img_to_use, relief=tk.GROOVE, borderwidth=1, anchor="center")
-            lbl.image = img_to_use # Keep reference
+            lbl.image = img_to_use  # Keep reference
             lbl.pack(side=tk.LEFT, padx=3)
             self.community_card_labels.append(lbl)
 
         # --- Pot and Bet Info Area (Center Middle) ---
         info_frame = ttk.Frame(self.game_frame, padding="10", style="Game.TFrame")
-        info_frame.grid(row=1, column=1, pady=5, sticky="n") # Place below community cards
+        info_frame.grid(row=1, column=1, pady=5, sticky="n")  # Place below community cards
         info_frame.columnconfigure(0, weight=1)
-        self.pot_label = ttk.Label(info_frame, text="Pot: 0", font=self.status_font, anchor="center", style="GreenBG.TLabel")
+        self.pot_label = ttk.Label(info_frame, text="Pot: 0", font=self.status_font, anchor="center",
+                                   style="GreenBG.TLabel")
         self.pot_label.grid(row=0, column=0, pady=2, sticky="ew")
-        self.current_bet_label = ttk.Label(info_frame, text="Current Bet: 0", font=self.status_font, anchor="center", style="GreenBG.TLabel")
+        self.current_bet_label = ttk.Label(info_frame, text="Current Bet: 0", font=self.status_font, anchor="center",
+                                           style="GreenBG.TLabel")
         self.current_bet_label.grid(row=1, column=0, pady=2, sticky="ew")
-        self.current_turn_label = ttk.Label(info_frame, text="Turn: -", font=self.status_font, anchor="center", style="GreenBG.TLabel")
+        self.current_turn_label = ttk.Label(info_frame, text="Turn: -", font=self.status_font, anchor="center",
+                                            style="GreenBG.TLabel")
         self.current_turn_label.grid(row=2, column=0, pady=2, sticky="ew")
 
         # --- Player Area (Bottom Row spanning columns) ---
         player_frame = ttk.LabelFrame(self.game_frame, text="You", padding="10", style="GreenBG.TLabelframe")
         player_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(10, 5), sticky="nsew")
         # Configure columns inside player frame for layout
-        player_frame.columnconfigure(0, weight=1) # Stats area
-        player_frame.columnconfigure(1, weight=2) # Cards area (wider)
-        player_frame.columnconfigure(2, weight=1) # Actions area
+        player_frame.columnconfigure(0, weight=1)  # Stats area
+        player_frame.columnconfigure(1, weight=2)  # Cards area (wider)
+        player_frame.columnconfigure(2, weight=1)  # Actions area
 
         # Player Stats (Left side of Player Area)
         player_stats_frame = ttk.Frame(player_frame, style="Game.TFrame")
         player_stats_frame.grid(row=0, column=0, sticky="nw", padx=10, pady=5)
-        self.player_chips_label = ttk.Label(player_stats_frame, text=f"Chips: {self.STARTING_CHIPS}", style="GreenBG.TLabel")
+        self.player_chips_label = ttk.Label(player_stats_frame, text=f"Chips: {self.STARTING_CHIPS}",
+                                            style="GreenBG.TLabel")
         self.player_chips_label.pack(anchor="w", pady=2)
-        self.player_hearts_label = ttk.Label(player_stats_frame, text=f"Hearts: {self.HEART_ICON * INITIAL_HEARTS}", style="Hearts.TLabel")
+        self.player_hearts_label = ttk.Label(player_stats_frame, text=f"Hearts: {self.HEART_ICON * INITIAL_HEARTS}",
+                                             style="Hearts.TLabel")
         self.player_hearts_label.pack(anchor="w", pady=2)
 
         # Player Cards (Center of Player Area)
         cards_frame = ttk.Frame(player_frame, style="Game.TFrame")
-        cards_frame.grid(row=0, column=1, pady=5, sticky="n") # Center horizontally
+        cards_frame.grid(row=0, column=1, pady=5, sticky="n")  # Center horizontally
         self.player_card_labels = []
-        img_to_use = self.card_back_image if self.card_back_image else ImageTk.PhotoImage(Image.new('RGB', (self.CARD_WIDTH, self.CARD_HEIGHT), self.TABLE_GREEN))
+        img_to_use = self.card_back_image if self.card_back_image else ImageTk.PhotoImage(
+            Image.new('RGB', (self.CARD_WIDTH, self.CARD_HEIGHT), self.TABLE_GREEN))
         for i in range(2):
             lbl = ttk.Label(cards_frame, image=img_to_use, relief=tk.GROOVE, borderwidth=1, anchor="center")
             lbl.image = img_to_use
@@ -314,36 +320,38 @@ class PokerGUI:
         action_frame.grid(row=0, column=2, padx=10, pady=5, sticky="ne")
         # Create buttons, initially disabled, use specific style
         btn_width = 10
-        self.check_button = ttk.Button(action_frame, text="Check", command=lambda: self.handle_human_action("check", 0), state=tk.DISABLED, style="Action.TButton", width=btn_width)
+        self.check_button = ttk.Button(action_frame, text="Check", command=lambda: self.handle_human_action("check", 0),
+                                       state=tk.DISABLED, style="Action.TButton", width=btn_width)
         self.check_button.pack(pady=3, fill=tk.X)
-        self.call_button = ttk.Button(action_frame, text="Call", command=lambda: self.handle_human_action("call", 0), state=tk.DISABLED, style="Action.TButton", width=btn_width)
+        self.call_button = ttk.Button(action_frame, text="Call", command=lambda: self.handle_human_action("call", 0),
+                                      state=tk.DISABLED, style="Action.TButton", width=btn_width)
         self.call_button.pack(pady=3, fill=tk.X)
-        self.fold_button = ttk.Button(action_frame, text="Fold", command=lambda: self.handle_human_action("fold", 0), state=tk.DISABLED, style="Action.TButton", width=btn_width)
+        self.fold_button = ttk.Button(action_frame, text="Fold", command=lambda: self.handle_human_action("fold", 0),
+                                      state=tk.DISABLED, style="Action.TButton", width=btn_width)
         self.fold_button.pack(pady=3, fill=tk.X)
         # Frame for Raise button and entry field
         raise_frame = ttk.Frame(action_frame, style="Game.TFrame")
         raise_frame.pack(pady=3, fill=tk.X)
-        self.raise_button = ttk.Button(raise_frame, text="Raise", command=self.handle_raise_prompt, state=tk.DISABLED, style="Action.TButton")
+        self.raise_button = ttk.Button(raise_frame, text="Raise", command=self.handle_raise_prompt, state=tk.DISABLED,
+                                       style="Action.TButton")
         self.raise_button.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(0, 3))
-        self.raise_amount_var = tk.StringVar() # Variable for raise amount entry
-        self.raise_entry = ttk.Entry(raise_frame, width=7, textvariable=self.raise_amount_var, state=tk.DISABLED, font=self.status_font)
+        self.raise_amount_var = tk.StringVar()  # Variable for raise amount entry
+        self.raise_entry = ttk.Entry(raise_frame, width=7, textvariable=self.raise_amount_var, state=tk.DISABLED,
+                                     font=self.status_font)
         self.raise_entry.pack(side=tk.LEFT)
-        self.all_in_button = ttk.Button(action_frame, text="All In", command=lambda: self.handle_human_action("all in", 0), state=tk.DISABLED, style="Action.TButton", width=btn_width)
+        self.all_in_button = ttk.Button(action_frame, text="All In",
+                                        command=lambda: self.handle_human_action("all in", 0), state=tk.DISABLED,
+                                        style="Action.TButton", width=btn_width)
         self.all_in_button.pack(pady=3, fill=tk.X)
 
         # --- Bot Area Placeholders ---
         self.bot_widgets = {}
         # Define intended grid positions for layout logic later
-        self._create_bot_area_placeholder("Bot_1", 0, 0) # Top Left
-        self._create_bot_area_placeholder("Bot_2", 0, 2) # Top Right
-        self._create_bot_area_placeholder("Bot_3", 1, 0) # Mid Left (below Bot 1)
+        self._create_bot_area_placeholder("Bot_1", 0, 0)  # Top Left
+        self._create_bot_area_placeholder("Bot_2", 0, 2)  # Top Right
+        self._create_bot_area_placeholder("Bot_3", 1, 0)  # Mid Left (below Bot 1)
 
-        # --- Return to Menu Button (Bottom Row, Left Column) ---
-        self.return_button = ttk.Button(self.game_frame,
-                                        text="Return to Menu",
-                                        command=self._return_to_menu, # Use the dedicated method
-                                        style="TButton", width=15)
-        self.return_button.grid(row=3, column=0, padx=10, pady=10, sticky="sw") # Place at bottom-left
+
 
 
     def _create_bot_area_placeholder(self, placeholder_name, grid_row, grid_col):
